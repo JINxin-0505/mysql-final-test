@@ -390,16 +390,20 @@ mysql> select * from t_employee;
 
 8.2 如何查看 MySQL 当前的隔离级别？
 
+## 选择数据库,查看当前事务隔离界别
 ```sql
-选择数据库,查看当前事务隔离界别
 select @@tx_isolation;
-开启事务,回滚事务
-事务级别中脏读,幻读 
-MySQL事务autocommit设置,每次sql必须用commit提交生效.
-MySQL默认操作模式就是autocommit自动提交模式。这就表示除非显式地开始一个事务，否则每个查询都被当做一个单独的事务自动执行。我们可以通过设置autocommit的值改变是否是自动提交autocommit模式。
-通过以下命令可以查看当前autocommit模式
+```
+## 开启事务,回滚事务
+## 事务级别中脏读,幻读 
+## MySQL事务autocommit设置,每次sql必须用commit提交生效.
+## MySQL默认操作模式就是autocommit自动提交模式。这就表示除非显式地开始一个事务，否则每个查询都被当做一个单独的事务自动执行。我们可以通过设置autocommit的值改变是否是自动提交autocommit模式。
+## 通过以下命令可以查看当前autocommit模式
+```sql
 show variables like 'autocommit';
+```
 关闭自动提交,每次sql必须通过commit命令提交.
+```sql
 mysql> set autocommit = 0;
 ```
 

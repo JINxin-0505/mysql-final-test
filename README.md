@@ -198,6 +198,7 @@ select ename from t_employee where hiredate=(select max(hiredate) from t_employe
 +----------------------+
 1 row in set (0.00 sec)
 ```
+简单数据查询运算
 
 3.4 将 MILLER 的 comm 增加 100； 然后，找到 comm 比 MILLER 低的人；
 ```sql
@@ -275,20 +276,31 @@ select count(ename) '人数',AVG(salary+comm) '平均收入' from t_employee;
 
 3.6 显示每个人的下属, 没有下属的显示 NULL。本操作使用关系代数中哪几种运算？
 ```sql
-select t1.ename '下属',t2.ename '老板',t3.ename 'boss'from(t_employee t1 inner join t_employee t2 on t1.mgr=t2.empno)inner join t_employee t3 on t2.mgr=t3.empno;
-+--------+--------+-------+
-| 下属   | 老板   | boss  |
-+--------+--------+-------+
-| SMITH  | FORD   | JONES |
-| ALLEN  | BLAKE  | KING  |
-| WARD   | BLAKE  | KING  |
-| MARTIN | BLAKE  | KING  |
-| SCOTT  | JONES  | KING  |
-| ADAMS  | SCOTT  | JONES |
-| JAMES  | BLAKE  | KING  |
-| FORD   | JONES  | KING  |
-+--------+--------+-------+
-8 rows in set (0.01 sec)
+select t1.ename '我', t2.ename '下属'from t_employee t1 left join t_employee t2 on t1.empno=t2.mgr;
++--------+--------+
+| 我     | 下属   |
++--------+--------+
+| FORD   | SMITH  |
+| BLAKE  | ALLEN  |
+| BLAKE  | WARD   |
+| KING   | JONES  |
+| BLAKE  | MARTIN |
+| KING   | BLAKE  |
+| JONES  | SCOTT  |
+| SCOTT  | ADAMS  |
+| BLAKE  | JAMES  |
+| JONES  | FORD   |
+| ADAMS  | NULL   |
+| ALLEN  | NULL   |
+| JAMES  | NULL   |
+| jinxin | NULL   |
+| MARTIN | NULL   |
+| MILLER | NULL   |
+| SMITH  | NULL   |
+| TURNER | NULL   |
+| WARD   | NULL   |
++--------+--------+
+19 rows in set (0.00 sec)
 ```
 
 3.7 建立一个视图：每个人的empno, ename, job 和 loc。简述为什么要建立本视图。

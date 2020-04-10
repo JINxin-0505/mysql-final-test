@@ -553,19 +553,13 @@ Create_tablespace_priv: N
 
 选择数据库,查看当前事务隔离界别
 ```sql
-select @@tx_isolation;
-```
-开启事务,回滚事务
- 事务级别中脏读,幻读 
- MySQL事务autocommit设置,每次sql必须用commit提交生效.
- MySQL默认操作模式就是autocommit自动提交模式。这就表示除非显式地开始一个事务，否则每个查询都被当做一个单独的事务自动执行。我们可以通过设置autocommit的值改变是否是自动提交autocommit模式。
- 通过以下命令可以查看当前autocommit模式
-```sql
-show variables like 'autocommit';
-```
-关闭自动提交,每次sql必须通过commit命令提交.
-```sql
-mysql> set autocommit = 0;
+ show variables like 'tx_isolation';
++---------------+-----------------+
+| Variable_name | Value           |
++---------------+-----------------+
+| tx_isolation  | REPEATABLE-READ |
++---------------+-----------------+
+1 row in set, 1 warning (0.02 sec)
 ```
 
 8.3 如果隔离级别为 READ-UNCOMMITED, 完成 “MILLER 的 comm 增加 100” 事务操作完成后，可能读到的结果有哪些，原因是什么？

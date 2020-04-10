@@ -183,18 +183,156 @@ mysql>  select * from t_employee;
 3.3 有几种职位（job字段）？在关系代数中，本操作是什么运算？
 
 3.4 将 MILLER 的 comm 增加 100； 然后，找到 comm 比 MILLER 低的人；
+```sql
+ update t_employee
+    -> set comm=100
+    ->  where ename='miller';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
 
-3.5 计算每个人的收入(ename, sal + comm)；计算总共有多少人；计算所有人的平均收入。 提示：计算时 NULL 要当做 0 处理； 
+mysql> select * from t_employee;
++----------+--------+-----------+------+------------+------+------+--------+
+| empno    | ename  | job       | mgr  | hiredate   | sal  | comm | deptno |
++----------+--------+-----------+------+------------+------+------+--------+
+|     7369 | SMITH  | CLERK     | 7902 | 1981-03-12 |  800 | NULL |     20 |
+|     7499 | ALLEN  | SALESMAN  | 7698 | 1982-03-12 | 1600 |  300 |     30 |
+|     7521 | WARD   | SALESMAN  | 7698 | 1838-03-12 | 1250 |  500 |     30 |
+|     7566 | JONES  | MANAGER   | 7839 | 1981-03-12 | 2975 | NULL |     20 |
+|     7654 | MARTIN | SALESMAN  | 7698 | 1981-01-12 | 1250 | 1400 |     30 |
+|     7698 | BLAKE  | MANAGER   | 7839 | 1985-03-12 | 2450 | NULL |     10 |
+|     7788 | SCOTT  | ANALYST   | 7566 | 1981-03-12 | 3000 | NULL |     20 |
+|     7839 | KING   | PRESIDENT | NULL | 1981-03-12 | 5000 | NULL |     10 |
+|     7844 | TURNER | SALESMAN  | 7689 | 1981-03-12 | 1500 |    0 |     30 |
+|     7878 | ADAMS  | CLERK     | 7788 | 1981-03-12 | 1100 | NULL |     20 |
+|     7900 | JAMES  | CLERK     | 7698 | 1981-03-12 |  950 | NULL |     30 |
+|     7902 | FORD   | ANALYST   | 7566 | 1981-03-12 | 3000 | NULL |     20 |
+|     7934 | MILLER | CLERK     | 7782 | 1981-03-12 | 1300 |  100 |     10 |
+| 17061512 | jinxin | student   | 7782 | 1999-05-05 | NULL | NULL |     10 |
++----------+--------+-----------+------+------------+------+------+--------+
+14 rows in set (0.00 sec)
+
+mysql> select ename
+    -> from t_employee
+    -> where comm<100;
++--------+
+| ename  |
++--------+
+| TURNER |
++--------+
+1 row in set (0.01 sec)
+```
+
+3.5 计算每个人的收入(ename, sal + comm)；计算总共有多少人；计算所有人的平均收入。 提示：计算时 NULL 要当做 0 处理；
+```sql
+select ename,sal+comm
+    -> from t_employee;
++--------+----------+
+| ename  | sal+comm |
++--------+----------+
+| SMITH  |     NULL |
+| ALLEN  |     1900 |
+| WARD   |     1750 |
+| JONES  |     NULL |
+| MARTIN |     2650 |
+| BLAKE  |     NULL |
+| SCOTT  |     NULL |
+| KING   |     NULL |
+| TURNER |     1500 |
+| ADAMS  |     NULL |
+| JAMES  |     NULL |
+| FORD   |     NULL |
+| MILLER |     1400 |
+| jinxin |     NULL |
++--------+----------+
+14 rows in set (0.01 sec)
 
 3.6 显示每个人的下属, 没有下属的显示 NULL。本操作使用关系代数中哪几种运算？
 
 3.7 建立一个视图：每个人的empno, ename, job 和 loc。简述为什么要建立本视图。
+```sql
+ create view view_t
+    -> as
+    -> select empno,ename,job
+    -> from t_employee;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from view_t;
++----------+--------+-----------+
+| empno    | ename  | job       |
++----------+--------+-----------+
+|     7369 | SMITH  | CLERK     |
+|     7499 | ALLEN  | SALESMAN  |
+|     7521 | WARD   | SALESMAN  |
+|     7566 | JONES  | MANAGER   |
+|     7654 | MARTIN | SALESMAN  |
+|     7698 | BLAKE  | MANAGER   |
+|     7788 | SCOTT  | ANALYST   |
+|     7839 | KING   | PRESIDENT |
+|     7844 | TURNER | SALESMAN  |
+|     7878 | ADAMS  | CLERK     |
+|     7900 | JAMES  | CLERK     |
+|     7902 | FORD   | ANALYST   |
+|     7934 | MILLER | CLERK     |
+| 17061512 | jinxin | student   |
++----------+--------+-----------+
+14 rows in set (0.01 sec)
+为了保护隐私不被别人侵犯
+```
 
 3.8 为表2增加一个约束：deptno字段需要在表1中存在；这称做什么完整性？
 
 3.9 为表2增加一个索引：ename 字段。简述为什么要在 ename 字段建立索引
+```sql
+create index index_ename
+    -> on t_employee(ename);
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
 
+mysql> show create table t_employee \G
+*************************** 1. row ***************************
+       Table: t_employee
+Create Table: CREATE TABLE `t_employee` (
+  `empno` int(11) NOT NULL,
+  `ename` varchar(20) DEFAULT NULL,
+  `job` varchar(20) DEFAULT NULL,
+  `mgr` int(11) DEFAULT NULL,
+  `hiredate` date DEFAULT NULL,
+  `salary` float DEFAULT NULL,
+  `comm` float DEFAULT NULL,
+  `deptno` int(11) DEFAULT NULL,
+  PRIMARY KEY (`empno`),
+  KEY `index_ename` (`ename`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+1 row in set (0.00 sec)
+```
 3.10 将表2的 sal 字段改名为 salary
+```sql
+alter table t_employee
+    -> change sal salary float;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from t_employee;
++----------+--------+-----------+------+------------+--------+------+--------+
+| empno    | ename  | job       | mgr  | hiredate   | salary | comm | deptno |
++----------+--------+-----------+------+------------+--------+------+--------+
+|     7369 | SMITH  | CLERK     | 7902 | 1981-03-12 |    800 | NULL |     20 |
+|     7499 | ALLEN  | SALESMAN  | 7698 | 1982-03-12 |   1600 |  300 |     30 |
+|     7521 | WARD   | SALESMAN  | 7698 | 1838-03-12 |   1250 |  500 |     30 |
+|     7566 | JONES  | MANAGER   | 7839 | 1981-03-12 |   2975 | NULL |     20 |
+|     7654 | MARTIN | SALESMAN  | 7698 | 1981-01-12 |   1250 | 1400 |     30 |
+|     7698 | BLAKE  | MANAGER   | 7839 | 1985-03-12 |   2450 | NULL |     10 |
+|     7788 | SCOTT  | ANALYST   | 7566 | 1981-03-12 |   3000 | NULL |     20 |
+|     7839 | KING   | PRESIDENT | NULL | 1981-03-12 |   5000 | NULL |     10 |
+|     7844 | TURNER | SALESMAN  | 7689 | 1981-03-12 |   1500 |    0 |     30 |
+|     7878 | ADAMS  | CLERK     | 7788 | 1981-03-12 |   1100 | NULL |     20 |
+|     7900 | JAMES  | CLERK     | 7698 | 1981-03-12 |    950 | NULL |     30 |
+|     7902 | FORD   | ANALYST   | 7566 | 1981-03-12 |   3000 | NULL |     20 |
+|     7934 | MILLER | CLERK     | 7782 | 1981-03-12 |   1300 |  100 |     10 |
+| 17061512 | jinxin | student   | 7782 | 1999-05-05 |   NULL | NULL |     10 |
++----------+--------+-----------+------+------------+--------+------+--------+
+14 rows in set (0.00 sec)
+```
 
 3.11 撰写一个函数 get_deptno_from_empno，输入 empno，输出对应的 deptno。 简述函数和存储过程有什么不同。
 
@@ -215,9 +353,16 @@ mysql>  select * from t_employee;
 6 画出表 1 和表 2 所对应的 E-R 图
 
 7 什么是外模式，什么是内模式。为什么要分成这几层？
+```sql
+外模式是用户与数据库系统的接口，是用户用到的那部分数据的描述。它由若干个外部记录类型组成。
+外模式也称子模式(Subschema)或用户模式，它是数据库用户（包括应用程序员和最终用户）能看见和使用的局部数据的逻辑结构和特征描述，是数据库用户的数据视图，是与某一应用有关的数据逻辑表示。对应于用户级。它是某个或某几个用户所看到的数据库的数据视图，是与某一应用有关的数据的逻辑表示。
+内模式又称存储模式，对应于物理级，它是数据库中全体数据的内部表示或底层描述，是数据库最低一级的逻辑描述，它描述了数据在存储介质上的存储方式和物理结构，对应着实际存储在外存储介质上的数据库。内模式由内模式描述语言来描述、定义所有内部记录类型、索引和文件的组织方式，以及数据控制方面的细节，它是数据库的存储观。”
+```
 
 8 什么是ACID？
-
+```sql
+“ACID，指数据库事务正确执行的四个基本要素的缩写。包含：原子性（Atomicity）、一致性（Consistency）、隔离性（Isolation）、持久性（Durability）。一个支持事务（Transaction）的数据库，必须要具有这四种特性，否则在事务过程（Transaction processing）当中无法保证数据的正确性，交易过程极可能达不到交易方的要求。”
+```
 8.1 编写一个事务，“将 MILLER 的 comm 增加 100，如果增加后的 comm 大于 1000 则回滚”；
 
 8.2 如何查看 MySQL 当前的隔离级别？
@@ -225,3 +370,6 @@ mysql>  select * from t_employee;
 8.3 如果隔离级别为 READ-UNCOMMITED, 完成 “MILLER 的 comm 增加 100” 事务操作完成后，可能读到的结果有哪些，原因是什么？
 
 9 有哪些场景不适合用关系型数据库？为什么？
+```sql
+搜索 推荐 商品分类 高频交易 用户和权限acl 日志分析 媒体库 email 分类广告 时间系列
+```

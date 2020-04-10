@@ -306,7 +306,7 @@ alter table t_employee
     -> change column deptno
     -> int not null;
 ```
- ## 实体完整性
+ 实体完整性
  
 3.9 为表2增加一个索引：ename 字段。简述为什么要在 ename 字段建立索引
 ```sql
@@ -332,7 +332,7 @@ Create Table: CREATE TABLE `t_employee` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 1 row in set (0.00 sec)
 ```
-## 为了提高从表中检索数据的速度
+ 为了提高从表中检索数据的速度
 
 3.10 将表2的 sal 字段改名为 salary
 ```sql
@@ -404,15 +404,15 @@ mysql> create function get_deptno_from_empno1(empno int)
 
 8.2 如何查看 MySQL 当前的隔离级别？
 
-## 选择数据库,查看当前事务隔离界别
+选择数据库,查看当前事务隔离界别
 ```sql
 select @@tx_isolation;
 ```
-## 开启事务,回滚事务
-## 事务级别中脏读,幻读 
-## MySQL事务autocommit设置,每次sql必须用commit提交生效.
-## MySQL默认操作模式就是autocommit自动提交模式。这就表示除非显式地开始一个事务，否则每个查询都被当做一个单独的事务自动执行。我们可以通过设置autocommit的值改变是否是自动提交autocommit模式。
-## 通过以下命令可以查看当前autocommit模式
+开启事务,回滚事务
+ 事务级别中脏读,幻读 
+ MySQL事务autocommit设置,每次sql必须用commit提交生效.
+ MySQL默认操作模式就是autocommit自动提交模式。这就表示除非显式地开始一个事务，否则每个查询都被当做一个单独的事务自动执行。我们可以通过设置autocommit的值改变是否是自动提交autocommit模式。
+ 通过以下命令可以查看当前autocommit模式
 ```sql
 show variables like 'autocommit';
 ```

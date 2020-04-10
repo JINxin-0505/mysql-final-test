@@ -266,7 +266,7 @@ select ename,sal+comm
 3.6 显示每个人的下属, 没有下属的显示 NULL。本操作使用关系代数中哪几种运算？
 ```sql
 select * from(t_employee t1 inner join employee t2 on t1.mgr+t2.empno)
-inner join t_employee t3 on t2.mgr+t3.empno;
+inner join t_employee t3 on t2.mgr=t3.empno;
 ```
 
 3.7 建立一个视图：每个人的empno, ename, job 和 loc。简述为什么要建立本视图。

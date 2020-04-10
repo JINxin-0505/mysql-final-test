@@ -399,12 +399,24 @@ mysql> select * from t_employee;
 
 3.11 撰写一个函数 get_deptno_from_empno，输入 empno，输出对应的 deptno。 简述函数和存储过程有什么不同。
 ```sql
-delimiter $$
-mysql> create function get_deptno_from_empno1(empno int)
-    -> begin
-    -> return (select deptno from t_employee where t_employee.empno=empno);
+DELIMITER $$
+mysql> CREATE FUNCTION func_get_deptno_from_empno (empno INT)
+    -> RETURNS int
+    -> BEGIN
+    -> RETURN (SELECT deptno FROM t_employee WHERE t_employee.empno = empno);
     -> end$$
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delimiter ;
+mysql> select func_get_deptno_from_empno(7369);
++----------------------------------+
+| func_get_deptno_from_empno(7369) |
++----------------------------------+
+|                               20 |
++----------------------------------+
+1 row in set (0.01 sec)
 ```
+
 4 建立一个新用户，账号为自己的姓名拼音，密码为自己的学号；
 
 ```sql

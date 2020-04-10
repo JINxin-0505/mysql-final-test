@@ -301,7 +301,13 @@ mysql> select * from view_t;
 ```
 
 3.8 为表2增加一个约束：deptno字段需要在表1中存在；这称做什么完整性？
-
+```sql
+alter table t_employee
+    -> change column deptno
+    -> int not null;
+```
+ ## 实体完整性
+ 
 3.9 为表2增加一个索引：ename 字段。简述为什么要在 ename 字段建立索引
 ```sql
 create index index_ename
@@ -326,6 +332,8 @@ Create Table: CREATE TABLE `t_employee` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 1 row in set (0.00 sec)
 ```
+## 为了提高从表中检索数据的速度
+
 3.10 将表2的 sal 字段改名为 salary
 ```sql
 alter table t_employee

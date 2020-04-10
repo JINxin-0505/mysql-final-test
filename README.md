@@ -262,8 +262,12 @@ select ename,sal+comm
 | jinxin |     NULL |
 +--------+----------+
 14 rows in set (0.01 sec)
-
+```
 3.6 显示每个人的下属, 没有下属的显示 NULL。本操作使用关系代数中哪几种运算？
+```sql
+select * from(t_employee t1 inner join employee t2 on t1.mgr+t2.empno)
+inner join t_employee t3 on t2.mgr+t3.empno;
+```
 
 3.7 建立一个视图：每个人的empno, ename, job 和 loc。简述为什么要建立本视图。
 ```sql
@@ -377,12 +381,15 @@ mysql> select * from t_employee;
 ```
 
 8 什么是ACID？
+
 ```sql
 “ACID，指数据库事务正确执行的四个基本要素的缩写。包含：原子性（Atomicity）、一致性（Consistency）、隔离性（Isolation）、持久性（Durability）。一个支持事务（Transaction）的数据库，必须要具有这四种特性，否则在事务过程（Transaction processing）当中无法保证数据的正确性，交易过程极可能达不到交易方的要求。”
 ```
+
 8.1 编写一个事务，“将 MILLER 的 comm 增加 100，如果增加后的 comm 大于 1000 则回滚”；
 
 8.2 如何查看 MySQL 当前的隔离级别？
+
 ```sql
 选择数据库,查看当前事务隔离界别
 select @@tx_isolation;
@@ -395,9 +402,11 @@ show variables like 'autocommit';
 关闭自动提交,每次sql必须通过commit命令提交.
 mysql> set autocommit = 0;
 ```
+
 8.3 如果隔离级别为 READ-UNCOMMITED, 完成 “MILLER 的 comm 增加 100” 事务操作完成后，可能读到的结果有哪些，原因是什么？
 
 9 有哪些场景不适合用关系型数据库？为什么？
+
 ```sql
 搜索 推荐 商品分类 高频交易 用户和权限acl 日志分析 媒体库 email 分类广告 时间系列
 ```

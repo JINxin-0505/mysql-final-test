@@ -179,8 +179,25 @@ mysql>  select * from t_employee;
 ```
 
 3.2 表中入职时间（Hiredate字段）最短的人。
-
+```sql
+select ename from t_employee where hiredate=(select max(hiredate) from t_employee);
++--------+
+| ename  |
++--------+
+| jinxin |
++--------+
+1 row in set (0.01 sec)
+```
 3.3 有几种职位（job字段）？在关系代数中，本操作是什么运算？
+```sql
+ select count(distinct(job)) from t_employee;
++----------------------+
+| count(distinct(job)) |
++----------------------+
+|                    6 |
++----------------------+
+1 row in set (0.00 sec)
+```
 
 3.4 将 MILLER 的 comm 增加 100； 然后，找到 comm 比 MILLER 低的人；
 ```sql
@@ -366,7 +383,18 @@ mysql> select * from t_employee;
 8.1 编写一个事务，“将 MILLER 的 comm 增加 100，如果增加后的 comm 大于 1000 则回滚”；
 
 8.2 如何查看 MySQL 当前的隔离级别？
-
+```sql
+选择数据库,查看当前事务隔离界别
+select @@tx_isolation;
+开启事务,回滚事务
+事务级别中脏读,幻读 
+MySQL事务autocommit设置,每次sql必须用commit提交生效.
+MySQL默认操作模式就是autocommit自动提交模式。这就表示除非显式地开始一个事务，否则每个查询都被当做一个单独的事务自动执行。我们可以通过设置autocommit的值改变是否是自动提交autocommit模式。
+通过以下命令可以查看当前autocommit模式
+show variables like 'autocommit';
+关闭自动提交,每次sql必须通过commit命令提交.
+mysql> set autocommit = 0;
+```
 8.3 如果隔离级别为 READ-UNCOMMITED, 完成 “MILLER 的 comm 增加 100” 事务操作完成后，可能读到的结果有哪些，原因是什么？
 
 9 有哪些场景不适合用关系型数据库？为什么？

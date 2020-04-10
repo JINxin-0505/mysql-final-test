@@ -356,7 +356,13 @@ mysql> select * from t_employee;
 ```
 
 3.11 撰写一个函数 get_deptno_from_empno，输入 empno，输出对应的 deptno。 简述函数和存储过程有什么不同。
-
+```sql
+delimiter $$
+mysql> create function get_deptno_from_empno1(empno int)
+    -> begin
+    -> return (select deptno from t_employee where t_employee.empno=empno);
+    -> end$$
+```
 4 建立一个新用户，账号为自己的姓名拼音，密码为自己的学号；
 
 4.1 将表1的SELECT, INSERT, UPDATE(ename)权限赋给该账号。

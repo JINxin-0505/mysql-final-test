@@ -265,7 +265,7 @@ select ename,sal+comm
 ```
 3.6 显示每个人的下属, 没有下属的显示 NULL。本操作使用关系代数中哪几种运算？
 ```sql
-select * from(t_employee t1 inner join employee t2 on t1.mgr+t2.empno)
+select * from(t_employee t1 inner join t_employee t2 on t1.mgr+t2.empno)
 inner join t_employee t3 on t2.mgr=t3.empno;
 ```
 

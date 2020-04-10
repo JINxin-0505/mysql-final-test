@@ -263,10 +263,32 @@ select ename,sal+comm
 +--------+----------+
 14 rows in set (0.01 sec)
 ```
+
+```sql
+select count(ename) '人数',AVG(salary+comm) '平均收入' from t_employee;
++--------+--------------+
+| 人数   | 平均收入     |
++--------+--------------+
+|     14 |         1840 |
++--------+--------------+
+```
+
 3.6 显示每个人的下属, 没有下属的显示 NULL。本操作使用关系代数中哪几种运算？
 ```sql
-select * from(t_employee t1 inner join t_employee t2 on t1.mgr=t2.empno)
-inner join t_employee t3 on t2.mgr=t3.empno;
+select t1.ename '下属',t2.ename '老板',t3.ename 'boss'from(t_employee t1 inner join t_employee t2 on t1.mgr=t2.empno)inner join t_employee t3 on t2.mgr=t3.empno;
++--------+--------+-------+
+| 下属   | 老板   | boss  |
++--------+--------+-------+
+| SMITH  | FORD   | JONES |
+| ALLEN  | BLAKE  | KING  |
+| WARD   | BLAKE  | KING  |
+| MARTIN | BLAKE  | KING  |
+| SCOTT  | JONES  | KING  |
+| ADAMS  | SCOTT  | JONES |
+| JAMES  | BLAKE  | KING  |
+| FORD   | JONES  | KING  |
++--------+--------+-------+
+8 rows in set (0.01 sec)
 ```
 
 3.7 建立一个视图：每个人的empno, ename, job 和 loc。简述为什么要建立本视图。
